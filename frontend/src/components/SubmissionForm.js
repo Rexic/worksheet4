@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 const SubmissionForm = () => {
   const { register, handleSubmit } = useForm();
   const [result, setResult] = useState("");
-  const onSubmit = (data) => setResult(JSON.stringify(data));
+  const onSubmit = (data) => setResult(axios
+    .post('http://localhost:8082/api/books', data)
+    .then(res => {
+      this.setState({
+        title: '',
+        isbn:'',
+        author:'',
+        description:'',
+        published_date:'',
+        publisher:''
+      })
+      this.props.history.push('/');
+    })
+    .catch(err => {
+      console.log("Error in CreateBook!");
+    })
+);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
     
